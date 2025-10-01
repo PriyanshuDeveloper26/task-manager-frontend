@@ -1,25 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link as RouterLink } from 'react-router-dom';
+import { Box, Flex, Heading, Link } from '@chakra-ui/react';
 import TasksPage from './pages/TasksPage';
 import UsersPage from './pages/UsersPage';
-import Button from './components/Button';
-import './styles.css'; // Import the new stylesheet
 
 function App() {
-    const [activePage, setActivePage] = useState('tasks');
-
     return (
-        <div className="app-container">
-            <header className="app-header">
-                <h1 className="app-title">Task Manager</h1>
-            </header>
-            <nav className="app-nav">
-                <Button onClick={() => setActivePage('tasks')}>Tasks</Button>
-                <Button onClick={() => setActivePage('users')}>Users</Button>
-            </nav>
-            <main className="app-main">
-                {activePage === 'tasks' ? <TasksPage /> : <UsersPage />}
-            </main>
-        </div>
+        <Router>
+            <Box>
+                <Flex as="nav" align="center" justify="space-between" wrap="wrap" padding="1.5rem" bg="teal.500" color="white">
+                    <Flex align="center" mr={5}>
+                        <Heading as="h1" size="lg" letterSpacing={'-.1rem'}>
+                            Task Manager
+                        </Heading>
+                    </Flex>
+
+                    <Box>
+                        <Link as={RouterLink} to="/" p={2} mr={4}>
+                            Tasks
+                        </Link>
+                        <Link as={RouterLink} to="/users" p={2}>
+                            Users
+                        </Link>
+                    </Box>
+                </Flex>
+
+                <Box p={8}>
+                    <Routes>
+                        <Route path="/" element={<TasksPage />} />
+                        <Route path="/users" element={<UsersPage />} />
+                    </Routes>
+                </Box>
+            </Box>
+        </Router>
     );
 }
 

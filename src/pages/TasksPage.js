@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Card from '../components/Card';
-import Input from '../components/Input';
-import Button from '../components/Button';
+import {
+    Box,
+    Flex,
+    FormLabel,
+    Input,
+    Textarea,
+    Select,
+    Button,
+    Grid,
+    GridItem,
+    Heading,
+    Text,
+    Stack,
+    Card
+} from '@chakra-ui/react';
+import { FormControl } from "@chakra-ui/form-control";
 
 const TasksPage = () => {
     const [tasks, setTasks] = useState([]);
@@ -61,58 +74,69 @@ const TasksPage = () => {
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
     return (
-        <div className="tasks-page-container">
-            <div className="tasks-grid">
-                <div className="tasks-form-column">
-                    <h2 className="tasks-heading">Add New Task</h2>
-                    <form onSubmit={handleCreateTask} className="tasks-form">
-                        <Input
-                            placeholder="Title"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-                        <textarea
-                            className="tasks-form-field"
-                            placeholder="Description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
-                        <select 
-                            value={selectedUser} 
-                            onChange={(e) => setSelectedUser(e.target.value)} 
-                            className="tasks-form-field"
-                        >
-                            <option value="">Select User</option>
-                            {users.map(user => (
-                                <option key={user._id} value={user._id}>{user.name}</option>
-                            ))}
-                        </select>
-                        <Button type="submit">Add Task</Button>
+        <Box p={8}>
+            <Flex direction={{ base: 'column', md: 'row' }} gap={8}>
+                <Box flex={1}>
+                    <Heading as="h2" size="lg" mb={4}>Add New Task</Heading>
+                    <form onSubmit={handleCreateTask}>
+                        <Stack spacing={4}>
+                            <FormControl isRequired>
+                                <FormLabel>Title</FormLabel>
+                                <Input
+                                    placeholder="Title"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
+                            </FormControl>
+                            <FormControl>
+                                <FormLabel>Description</FormLabel>
+                                <Textarea
+                                    placeholder="Description"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                />
+                            </FormControl>
+                            <FormControl isRequired>
+                                <FormLabel>Assign to</FormLabel>
+                                <Select
+                                    placeholder="Select User"
+                                    value={selectedUser}
+                                    onChange={(e) => setSelectedUser(e.target.value)}
+                                >
+                                    {users.map(user => (
+                                        <option key={user._id} value={user._id}>{user.name}</option>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <Button type="submit" colorScheme="blue">Add Task</Button>
+                        </Stack>
                     </form>
-                </div>
-                <div className="tasks-list-column">
-                    <h2 className="tasks-heading">Tasks</h2>
-                    <div className="tasks-list-grid">
+                </Box>
+                <Box flex={2}>
+                    <Heading as="h2" size="lg" mb={4}>Tasks</Heading>
+                    <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap={6}>
                         {currentTasks.map(task => (
-                            <Card key={task._id}>
-                                <h3 className="task-title">{task.title}</h3>
-                                <p className="task-description">{task.description}</p>
-                                <p className="task-assigned-to">
-                                    <strong>Assigned to:</strong> {task.user ? task.user.name : 'N/A'}
-                                </p>
-                            </Card>
+                            <GridItem key={task._id}>
+                                <Card>
+                                    <Heading as="h3" size="md" mb={2}>{task.title}</Heading>
+                                    <Text mb={2}>{task.description}</Text>
+                                    <Text fontSize="sm" color="gray.500">
+                                        <strong>Assigned to:</strong> {task.user ? task.user.name : 'N/A'}
+                                    </Text>
+                                </Card>
+                            </GridItem>
                         ))}
-                    </div>
-                    <div className="tasks-pagination">
+                    </Grid>
+                    <Stack direction="row" spacing={4} mt={8} justify="center">
                         {Array.from({ length: Math.ceil(tasks.length / tasksPerPage) }, (_, i) => (
-                            <Button key={i + 1} onClick={() => paginate(i + 1)}>
+                            <Button key={i + 1} onClick={() => paginate(i + 1)} colorScheme={currentPage === i + 1 ? 'blue' : 'gray'}>
                                 {i + 1}
                             </Button>
                         ))}
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </Stack>
+                </Box>
+            </Flex>
+        </Box>
     );
 };
 

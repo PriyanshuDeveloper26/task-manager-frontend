@@ -1,13 +1,14 @@
 import React from 'react';
+import { Input as ChakraInput } from '@chakra-ui/react';
 
-const Input = ({ type = 'text', placeholder, value, onChange }) => {
+const Input = ({ type = 'text', placeholder, value, onChange, ...rest }) => {
     return (
-        <input
-            className="tasks-form-field"
+        <ChakraInput
             type={type}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
+            {...rest}
         />
     );
 };

@@ -1,14 +1,15 @@
 import React from 'react';
+import { Button as ChakraButton } from '@chakra-ui/react';
 
-const Button = ({ children, onClick, type = 'button' }) => {
+const Button = ({ children, onClick, type = 'button', ...rest }) => {
     return (
-        <button 
-            className="button"
+        <ChakraButton 
             onClick={onClick} 
             type={type}
+            {...rest}
         >
             {children}
-        </button>
+        </ChakraButton>
     );
 };
 
