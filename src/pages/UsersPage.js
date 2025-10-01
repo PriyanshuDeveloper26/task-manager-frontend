@@ -3,6 +3,7 @@ import axios from 'axios';
 import {
     Box,
     Flex,
+    FormControl,
     FormLabel,
     Input,
     Button,
@@ -12,7 +13,7 @@ import {
     Card,
     Stack
 } from '@chakra-ui/react';
-import { FormControl } from "@chakra-ui/form-control";
+
 
 const UsersPage = () => {
     const [users, setUsers] = useState([]);
